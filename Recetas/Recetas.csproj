@@ -14,7 +14,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="dbup" Version="5.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.11" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.9.4">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +34,21 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\src\Models\AmountResponseModel.ts" />
+    <None Remove="ClientApp\src\Models\CategoryModel.ts" />
+    <None Remove="ClientApp\src\Models\IngredientModel.ts" />
+    <None Remove="ClientApp\src\Models\MaltidModel.ts" />
+    <None Remove="ClientApp\src\Models\MeasurementModel.ts" />
+    <None Remove="ClientApp\src\Models\RecipeModel.ts" />
+    <None Remove="ClientApp\src\Models\StepModel.ts" />
+    <None Remove="ClientApp\src\Store\state.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\Models\AmountResponseModel.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

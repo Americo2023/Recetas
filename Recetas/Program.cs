@@ -1,8 +1,35 @@
+using DbUp;
+using Recetas.Data.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+EnsureDatabase.For.SqlDatabase(connectionString);
+
+var upgrader = DeployChanges.To.SqlDatabase(connectionString, null)
+        .WithScriptsEmbeddedInAssembly(
+            System.Reflection.Assembly.GetExecutingAssembly())
+        .WithTransaction()
+        .Build();
+
+if (upgrader.IsUpgradeRequired())
+{
+    upgrader.PerformUpgrade();
+}
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IAmountRepository, AmountRepository>();
+
+builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+builder.Services.AddScoped<IMaltidRepository, MaltidRepository>();
+
+builder.Services.AddScoped<IIngredientRepository, IngredientRepository>();
+builder.Services.AddScoped<IMeasurementRepository, MeasurementRepository>();
+
+builder.Services.AddScoped<IStepRepository, StepRepository>();
 
 var app = builder.Build();
 
@@ -17,6 +44,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCors(
+  options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
+);
 
 app.MapControllerRoute(
     name: "default",
